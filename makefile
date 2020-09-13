@@ -27,3 +27,5 @@ $(EXEC): $(OBJS)
 clean:
 	rm -f $(OBJS) boid
 
+img-clean:
+	rm -f *.png

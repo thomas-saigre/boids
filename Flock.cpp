@@ -1,5 +1,7 @@
 #include "Flock.h"
 #include <cmath>
+#include <iostream>
+#include <sstream>
 #include <unistd.h>
 #include "utils.h"
 
@@ -8,7 +10,7 @@
 
 
 
-Flock::Flock( int n, sf::RenderWindow *win) :  boids_(n), window_(win)
+Flock::Flock( int n, sf::RenderWindow *win) :  boids_(n), window_(win), screenShotId_(0), save_(false), display_(true)
 {
     window_->create(sf::VideoMode(LVL_W, LVL_H), "Boids simulator", SF_STYLE);
 }
@@ -54,6 +56,20 @@ void Flock::draw()
 }
 
 
+void Flock::saveScreenShot()
+{
+    std::stringstream name("");
+    name << "screenShot" << screenShotId_ << ".png";
+    sf::Texture texture ;
+    texture.create( LVL_W, LVL_H );
+    texture.update( *window_ );
+    sf::Image img = texture.copyToImage();
+    if (!img.saveToFile(name.str()))
+        std::cerr << "Fail to save screenshot\n";
+    screenShotId_ ++ ;
+}
+
+
 
 void Flock::Run()
 {
@@ -67,7 +83,10 @@ void Flock::Run()
 
         window_->clear(sf::Color(150,150,150));
         draw();
-        window_->display();
+        if (display_)
+            window_->display();
+        if (save_)
+            saveScreenShot();
 
         updatePosition();
         usleep(TPS_ATTENTE);
@@ -81,6 +100,23 @@ void Flock::seekEvent(sf::Event event)
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) || (event.type == sf::Event::Closed))
     {
         closeWindow();
+    }
+    else if ( event.type == sf::Event::KeyPressed )
+    {
+        switch (event.key.code)
+        {
+        case sf::Keyboard::F1:
+            saveScreenShot();
+            break;
+        case sf::Keyboard::S:
+            save_ = !save_ ;
+            break;
+        case sf::Keyboard::D:
+            display_ = !display_ ;
+            break;
+        default:
+            break;
+        }
     }
 }
 

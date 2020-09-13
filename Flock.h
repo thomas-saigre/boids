@@ -4,6 +4,7 @@
 
 #include "Boid.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 #include <vector>
 #include "values.h"
 
@@ -19,6 +20,7 @@ public:
     void center() ;
 
     void draw() ;
+    void saveScreenShot() ;
 
     void Run();
     void closeWindow();
@@ -29,6 +31,8 @@ public:
 private:
     flock_t boids_ ;
     sf::RenderWindow *window_ ;
+    int screenShotId_ ;
+    bool save_, display_ ;
 };
 
 
