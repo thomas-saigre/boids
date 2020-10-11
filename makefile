@@ -14,6 +14,9 @@ all: $(EXEC) values.h
 debug: CFLAGS = -g
 debug: $(EXEC)
 
+green: CFLAGS = -O3 -Wall -Wextra -DGREEN
+green: $(EXEC)
+
 
 Boid.o: Boid.cpp
 	$(CC) $< -c $(CFLAGS)

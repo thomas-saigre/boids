@@ -46,10 +46,12 @@ void Flock::draw()
     for ( ; boid!=en; ++boid )
     {
         sf::CircleShape bd( TAILLE_BOID );
-        if (boid->ind != 0)
-        bd.setFillColor(sf::Color(109, 7, 20));
-        else
+#ifdef GREEN
+        if (boid->ind == 0)
         bd.setFillColor(sf::Color(0,255,0));
+        else
+#endif
+        bd.setFillColor(sf::Color(109, 7, 20));
         bd.setPosition( boid->getPosition() );
         window_->draw( bd );
     }
